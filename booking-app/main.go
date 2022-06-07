@@ -36,7 +36,12 @@ func main(){
 	fmt.Scan(&userTickets)
 	fmt.Println()
 	
+	remainTickets = remainTickets - userTickets
+
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will recive a confirmation mail at %v\n ", userFirstName, userLasttName, userTickets, userEmail)
+	fmt.Println()
+	
+	fmt.Printf("%v tickets remaining for %v\n",remainTickets,eventName)
 
 }
 
