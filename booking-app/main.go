@@ -18,7 +18,7 @@ func main() {
 
 		userFirstName, userLastName, userEmail, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(userFirstName, userLastName, userEmail, userTickets)
+		isValidName, isValidEmail, isValidTicketNumber := ValidateUserInput(userFirstName, userLastName, userEmail, userTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 
@@ -65,12 +65,6 @@ func getFirstNames() []string {
 	return userFirstNames
 }
 
-func validateUserInput(userFirstName string, userLastName string, userEmail string, userTickets uint) (bool, bool, bool) {
-	isValidName := len(userFirstName) >= 2 && len(userLastName) >= 2
-	isValidEmail := strings.Contains(userEmail, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainTickets
-	return isValidName, isValidEmail, isValidTicketNumber
-}
 
 func getUserInput() (string, string, string, uint) {
 	// User details input
