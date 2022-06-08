@@ -1,16 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 const tickets int = 150
+
 var eventName = "GOLANG"
 var remainTickets uint = 50
 var ticketsBooking = make([]UserData, 0)
 
 type UserData struct {
-	firstname string
-	lastname string
-	email string
+	firstname       string
+	lastname        string
+	email           string
 	numberOfTickets uint
 }
 
@@ -27,6 +31,7 @@ func main() {
 		if isValidName && isValidEmail && isValidTicketNumber {
 
 			bookTicket(userTickets, userFirstName, userLastName, userEmail)
+			go sendTicket(userTickets,userFirstName,userLastName,userEmail)
 
 			userFirstNames := getFirstNames()
 			fmt.Printf("The first names of bookings are : %v", userFirstNames)
@@ -68,7 +73,6 @@ func getFirstNames() []string {
 	return userFirstNames
 }
 
-
 func getUserInput() (string, string, string, uint) {
 	// User details input
 
@@ -101,9 +105,9 @@ func bookTicket(userTickets uint, userFirstName string, userLastName string, use
 
 	// map for user
 	var userData = UserData{
-		firstname: userFirstName,
-		lastname: userLastName,
-		email: userEmail,
+		firstname:       userFirstName,
+		lastname:        userLastName,
+		email:           userEmail,
 		numberOfTickets: userTickets,
 	}
 
@@ -115,4 +119,12 @@ func bookTicket(userTickets uint, userFirstName string, userLastName string, use
 
 	fmt.Printf("%v tickets remaining for %v", remainTickets, eventName)
 	fmt.Println()
+}
+
+func sendTicket(userTickets uint, userFirstName string, userLastName string, userEmail string) {
+	time.Sleep(50 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, userFirstName, userLastName)
+	fmt.Println("--------------------------------------------")
+	fmt.Printf("Sending ticket : \n %v \n to email address %v\n", ticket, userEmail)
+	fmt.Println("--------------------------------------------")
 }
