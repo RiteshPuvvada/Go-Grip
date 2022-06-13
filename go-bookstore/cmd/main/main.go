@@ -1,9 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/RiteshPuvvada/Go-Grip/tree/main/go-bookstore/pkg/routes"
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
-	fmt.Print("GG")
+	r := mux.NewRouter()
+	routes.RegisterBookStoreRoutes(r)
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe("localhost:3300", r))
 }
