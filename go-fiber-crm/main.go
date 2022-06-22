@@ -6,6 +6,7 @@ import (
 	"github.com/RiteshPuvvada/Go-Grip/tree/main/go-fiber-crm/database"
 	"github.com/gofiber/fiber"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func Routes(app *fiber.App){
