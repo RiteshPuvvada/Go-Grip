@@ -1,7 +1,7 @@
 package main
 
 import (
-
+	"github.com/gofiber/fiber/v2"
 )
 
 type MongoInstance struct{
@@ -26,5 +26,12 @@ func Connect() error{
 }
 
 func main(){
-	
+	app := fiber.New()
+
+	app.Get("/employee", func(c *fiber.Ctx) error {
+		
+	})
+	app.Post("/employee")
+	app.Put("/employee/:id")
+	app.Delete("/employee/:id")
 }
