@@ -74,7 +74,7 @@ func main(){
 
 		employee := new(Employee)
 		if err := c.BodyParser(employee); err != nil{
-			return c.Status(500).SendString(err.Error())
+			return c.Status(400).SendString(err.Error())
 		}
 		employee.ID = ""
 		insertionResult, err := collection.InsertOne(c.Context(), employee)
@@ -87,10 +87,51 @@ func main(){
 
 		createdEmployee := &Employee{}
 		createdRecord.Decode(createdEmployee)
-		
+
 		return c.Status(201).JSON(createdEmployee)
 	})
 
-	app.Put("/employee/:id")
-	app.Delete("/employee/:id")
+	app.Put("/employee/:id", func(c *fiber.Ctx) error {
+		idParam := c.Params("id")
+
+		employeeID, err := primitive.ObjectIDFromHex(idParam)
+
+		if err != nil{
+			return c.SendStatus(400)
+		}
+
+		employee := new(Employee)
+
+		if err := c.BodyParser(employee); err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+
+		query := bson.D{{Key:"_id", Value: employeeID}}
+		update := bson.D{
+			{
+				Key: "$set",
+				Value : bson.D{
+					{Key:"name", Value: employee.Name},
+					{Key:"age", Value: employee.Age},
+					{Key:"salary", Value: employee.Salary},
+				},
+			},
+		}
+		
+		MI.Db.Collection("employees").FindOneAndUpdate(c.Context(), query, update).Err()
+		if err != nil {
+			if err == mongo.ErrNoDocuments{
+				return c.SendStatus(400)
+			}
+			return c.SendStatus(500)
+		}
+
+		employee.ID = idParam
+
+		return c.Status(200).JSON(employee)
+	})
+
+	app.Delete("/employee/:id", func(c *fiber.Ctx) error {
+
+	})
 }
