@@ -1,12 +1,20 @@
 package main
 
 import (
+	"context"
+	"log"
+	"time"
+
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongoInstance struct{
-	Client
-	Db
+	Client   *mongo.Client
+	Db       *mongo.Database
 }
 
 var MI MongoInstance
@@ -22,10 +30,29 @@ type Employee struct{
 }
 
 func Connect() error{
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoURI))
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
+	err = client.Connect(ctx)
+	db := client.Database(DbName)
+
+	if err != nil {
+		return err
+	}
+
+	MI = MongoInstance{
+		Client: client,
+		Db: db,
+	}
+	return nil
 }
 
 func main(){
+	if err := Connect(); err != nil{
+		log.Fatal(err)
+	}
+
 	app := fiber.New()
 
 	app.Get("/employee", func(c *fiber.Ctx) error {
