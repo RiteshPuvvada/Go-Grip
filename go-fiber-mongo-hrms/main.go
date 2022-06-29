@@ -23,7 +23,7 @@ const DbName = "fiber-hrms"
 const mongoURI = "mongodb+srv://ritesh:ritesh@cluster0.r51mi.mongodb.net/?retryWrites=true&w=majority/" + DbName
 
 type Employee struct {
-	ID     string  `json:"id,omitempty" bson:"_id, omitempty"`
+	ID     string  `json:"id,omitempty" bson:"_id,omitempty"`
 	Name   string  `json:"name"`
 	Salary float64 `json:"salary"`
 	Age    float64 `json:"age"`
@@ -74,11 +74,15 @@ func main() {
 		collection := MI.Db.Collection("employees")
 
 		employee := new(Employee)
+
 		if err := c.BodyParser(employee); err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
+
 		employee.ID = ""
+
 		insertionResult, err := collection.InsertOne(c.Context(), employee)
+
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -90,6 +94,7 @@ func main() {
 		createdRecord.Decode(createdEmployee)
 
 		return c.Status(201).JSON(createdEmployee)
+
 	})
 
 	app.Put("/employee/:id", func(c *fiber.Ctx) error {
@@ -133,23 +138,26 @@ func main() {
 	})
 
 	app.Delete("/employee/:id", func(c *fiber.Ctx) error {
-		employeeID, err := primitive.ObjectIDFromHex(
-			c.Params("id"),
-		)
-		if err!=nil{
+
+		employeeID, err := primitive.ObjectIDFromHex(c.Params("id"))
+
+		if err != nil {
 			return c.SendStatus(400)
 		}
+
 		query := bson.D{{Key: "_id", Value: employeeID}}
 		result, err := MI.Db.Collection("employees").DeleteOne(c.Context(), &query)
-		
-		if err != nil{
+
+		if err != nil {
 			return c.SendStatus(500)
 		}
 
 		if result.DeletedCount < 1 {
 			return c.SendStatus(404)
 		}
+
 		return c.Status(200).JSON("record deleted")
+
 	})
 
 	log.Fatal(app.Listen(":3000"))
