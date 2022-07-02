@@ -2,8 +2,7 @@ package main
 
 import (
 	"os"
-
-	"github.com/RiteshPuvvada/Go-Grip/tree/main/go-serverless-yt/pkg/handlers"
+	"github.com/RiteshPuvvada/Go-Grip/go-serverless-yt/pkg/handlers"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
