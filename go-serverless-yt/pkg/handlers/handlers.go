@@ -1,25 +1,21 @@
 package handlers
 
-import (
-
-)
-
-func GetUser(){
+func GetUser() {
 
 }
 
-func CreateUser(){
+func CreateUser() {
 
 }
 
-func UpdateUser(){
+func UpdateUser() {
 
 }
 
-func DeleteUser(){
+func DeleteUser() {
 
 }
 
-func UnhandlerMethod(){
-	
-} 
+func UnhandlerMethod() {
+
+}

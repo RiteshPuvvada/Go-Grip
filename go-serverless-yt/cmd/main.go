@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+
 	"github.com/RiteshPuvvada/Go-Grip/go-serverless-yt/pkg/handlers"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -11,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
-var(
+var (
 	dynaClient dynamodbiface.DynamoDBAPI
 )
 

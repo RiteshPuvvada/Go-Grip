@@ -6,9 +6,9 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func apiResponse(status int, body interface{})(*events.APIGatewayProxyResponse, error){
+func apiResponse(status int, body interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
-		Headers: map[string]string{"Content-Type":"application/json"},
+		Headers: map[string]string{"Content-Type": "application/json"},
 	}
 	resp.StatusCode = status
 
